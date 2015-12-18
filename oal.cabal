@@ -16,6 +16,8 @@ description:         Please see README.md
 executable oal
   hs-source-dirs:      src
   main-is:             Main.hs
+  other-modules:
+    My.Sound
   ghc-options:         -Wall -O -threaded -rtsopts -with-rtsopts=-N
   default-language:    Haskell2010
   build-depends:
@@ -25,3 +27,4 @@ executable oal
     , GLFW-b
     , GLUT
     , StateVar
+    , vector
