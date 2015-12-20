@@ -57,6 +57,9 @@ drawingStuff win evch spch = do
   GLFW.setWindowSizeCallback win $ Just $ \_ x y ->
     atomically $ writeTQueue evch $ EvtResize x y
 
+  -- This doesn't seem to work on Windows, that's why we need a
+  -- threadDelay at the end of the loop
+  -- GL.finish seems to be helping, but not completely :(
   GLFW.swapInterval 1
   depthFunc $= Just Always
   clearColor $= Color4 1 1 1 1
@@ -77,8 +80,11 @@ drawingStuff win evch spch = do
         vertex $ Vertex2 x y0
         vertex $ Vertex2 x y1
 
+    -- flush
     GLFW.swapBuffers win
+    finish
 
+    threadDelay 8300
     when (st ^. stGoOn) $ loop st' l'
 
 consumeTQueue :: TQueue a -> [a] -> IO [a]
