@@ -25,6 +25,7 @@ executable oal
     , OpenAL
     , OpenGL
     , GLFW-b
-    , GLUT
     , StateVar
+    , stm
+    , lens
     , vector
