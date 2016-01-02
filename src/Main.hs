@@ -64,6 +64,8 @@ drawingStuff win evch spch = do
   depthFunc $= Just Always
   clearColor $= Color4 1 1 1 1
   loop (iniState & stW .~ 800 & stH .~ 600) []
+  -- Force a resize event:
+  atomically $ writeTQueue evch $ EvtResize 800 600
 
   where
   loop st l = do
