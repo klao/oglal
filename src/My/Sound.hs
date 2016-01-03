@@ -47,10 +47,17 @@ startCapture
   -> (Vector Float -> IO ())    -- ^ Callback to consume recorded samples
   -> IO ()
 startCapture samples callb = do
+  -- Debug info:
+  putStr "allCaptureDeviceSpecifiers: "
+  get allCaptureDeviceSpecifiers >>= print
+  putStr "captureDefaultDeviceSpecifier: "
+  get captureDefaultDeviceSpecifier >>= print
   -- TODO(klao): is 2*samples enough? Detect overruns?
   mdev <- captureOpenDevice Nothing 44100 Mono16 (fromIntegral $ 2 * samples)
   case mdev of
-    Nothing -> fakeLoop samples callb
+    Nothing -> do
+      putStrLn "Couldn't open default capture device. Running fake."
+      fakeLoop samples callb
     Just dev -> do
       captureStart dev
       buf <- callocArray 2048
